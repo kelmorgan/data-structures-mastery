@@ -87,12 +87,22 @@ public class Tree {
         System.out.println(root.value);
     }
 
-    public int height (){
+    private int minimum(Node root) {
+        if (root == null)
+            return 0;
+        
+        var left = minimum(root.leftChild);
+        var right = minimum(root.rightChild);
+
+        return Math.min(Math.min(left, right), root.value);
+    }
+
+    public int height() {
         return height(root);
     }
 
-    private int height(Node root){
-        if(root == null)
+    private int height(Node root) {
+        if (root == null)
             return -1;
 
         if (root.leftChild == null && root.rightChild == null)
