@@ -1,5 +1,8 @@
 package com.kelmorgan.datastructure;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Tree {
 
 
@@ -54,11 +57,9 @@ public class Tree {
         traversePostOrder(root);
     }
 
-
     public void traverseInOrder() {
         traverseInOrder(root);
     }
-
 
     private void traversePreOrder(Node root) {
         if (root == null)
@@ -87,14 +88,83 @@ public class Tree {
         System.out.println(root.value);
     }
 
+    public int min() {
+        return minimum(root);
+    }
+
     private int minimum(Node root) {
-        if (root == null)
-            return 0;
-        
+        if (isLeave(root))
+            return root.value;
+
         var left = minimum(root.leftChild);
         var right = minimum(root.rightChild);
 
         return Math.min(Math.min(left, right), root.value);
+    }
+
+    public boolean equals(Tree other) {
+        if (other == null)
+            return false;
+
+        return equals(root, other.root);
+    }
+
+    private boolean equals(Node first, Node second) {
+        if (first == null && second == null)
+            return true;
+
+        if (first != null && second != null) {
+            return first.value == second.value
+                    && equals(first.leftChild, second.leftChild)
+                    && equals(first.rightChild, second.rightChild);
+        }
+
+        return false;
+    }
+
+    private boolean isLeave(Node node) {
+        return node.leftChild == null && node.rightChild == null;
+    }
+
+    public boolean isBinarySearchTree() {
+        return isBinarySearchTree(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    private boolean isBinarySearchTree(Node root, int min, int max) {
+        if (root == null)
+            return true;
+
+        if (root.value < min || root.value > max)
+            return false;
+
+        return isBinarySearchTree(root.leftChild, min, root.value - 1)
+                && isBinarySearchTree(root.rightChild, root.value + 1, max);
+
+    }
+
+    public List<Integer> getNodeAsDistance(int distance) {
+        var list = new ArrayList<Integer>();
+        getNodeAsDistance(root, distance, list);
+        return list;
+    }
+
+    private void getNodeAsDistance(Node root, int distance, ArrayList<Integer> list) {
+        if (root == null)
+            return;
+
+        if (distance == 0) {
+            list.add(root.value);
+            return;
+        }
+
+        getNodeAsDistance(root.leftChild, distance - 1, list);
+        getNodeAsDistance(root.rightChild, distance - 1, list);
+    }
+
+    public void swapRoot() {
+        var temp = this.root.leftChild;
+        root.leftChild = this.root.rightChild;
+        root.rightChild = temp;
     }
 
     public int height() {
@@ -105,10 +175,17 @@ public class Tree {
         if (root == null)
             return -1;
 
-        if (root.leftChild == null && root.rightChild == null)
+        if (isLeave(root))
             return 0;
 
         return 1 + Math.max(height(root.leftChild), height(root.rightChild));
+    }
+
+    public void traverseLevelOrder() {
+        for (var i = 0; i <= height(); i++) {
+            for(var value : getNodeAsDistance(i))
+                System.out.println(value);
+        }
     }
 
     private static class Node {
