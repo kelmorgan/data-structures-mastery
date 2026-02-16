@@ -1,22 +1,25 @@
 package com.kelmorgan.datastructure;
 
 
+import java.util.Arrays;
+
+
 public class Main {
 
     public static void main(String[] args) {
 
-        var factorial = Factorial.factorial(5);
+        AddTwoNumbers.ListNode node1 = new AddTwoNumbers.ListNode(1);
+        node1.next = new AddTwoNumbers.ListNode(2);
+        node1.next.next = new AddTwoNumbers.ListNode(3);
+        AddTwoNumbers.ListNode node2 = new AddTwoNumbers.ListNode(1);
+        node2.next = new AddTwoNumbers.ListNode(2);
+        node2.next.next = new AddTwoNumbers.ListNode(3);
 
-        System.out.println(factorial);
+        AddTwoNumbers.ListNode listNode = AddTwoNumbers.addTwoNumbers(node1, node2);
 
-        AVLTree tree = new AVLTree();
-        tree.insert(7);
-        tree.insert(4);
-        tree.insert(9);
-        tree.insert(1);
-        tree.insert(6);
-        tree.insert(8);
-        tree.insert(10);
+        System.out.println(listNode);
 
     }
+
+
 }
