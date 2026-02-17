@@ -9,6 +9,54 @@ public class LongestSubString {
 
 
 
+
+    public static int lengthOfLongestSubstringBruteForce(String s) {
+        int n = s.length();
+        int maxLength = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                if (allUnique(s, i, j)) {
+                    maxLength = Math.max(maxLength, j - i + 1);
+                }
+            }
+        }
+
+        return maxLength;
+    }
+
+    private static boolean allUnique(String s, int start, int end) {
+        Set<Character> set = new HashSet<>();
+        for (int i = start; i <= end; i++) {
+            char c = s.charAt(i);
+            if (set.contains(c)) {
+                return false;
+            }
+            set.add(c);
+        }
+        return true;
+    }
+
+
+    public static int lengthOfLongestSubstringSlidingWindow(String s) {
+        int n = s.length();
+        int maxLength = 0;
+
+        for (int i = 0; i < n; i++) {
+            Set<Character> set = new HashSet<>();
+            for (int j = i; j < n; j++) {
+                char c = s.charAt(j);
+                if (set.contains(c)) {
+                    break; // Found duplicate, stop expanding
+                }
+                set.add(c);
+                maxLength = Math.max(maxLength, j - i + 1);
+            }
+        }
+
+        return maxLength;
+    }
+
     public static int longestSubstringWithoutDuplicateCharacters(String input) {
         var set = new HashSet<Character>();
         int maxLength = 0;
